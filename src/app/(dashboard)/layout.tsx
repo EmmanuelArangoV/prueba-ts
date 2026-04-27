@@ -33,9 +33,9 @@ export default function DashboardLayout({ children }: { children: React.ReactNod
       ];
 
   return (
-    <div className="flex h-screen bg-[#fdfdf7]">
-      <aside className="w-64 border-r border-stone-200 bg-white flex flex-col">
-        <div className="h-16 flex items-center px-6 border-b border-stone-200">
+    <div className="flex h-screen bg-gray-50">
+      <aside className="w-64 border-r border-gray-200 bg-white flex flex-col shadow-sm z-10 relative">
+        <div className="h-16 flex items-center px-6 border-b border-gray-100">
           <span className="font-bold text-xl text-red-600 tracking-tight">HorusPay</span>
         </div>
         <nav className="flex-1 px-4 py-6 space-y-2">
@@ -45,10 +45,10 @@ export default function DashboardLayout({ children }: { children: React.ReactNod
               <Link
                 key={item.name}
                 href={item.href}
-                className={`flex items-center px-3 py-2.5 rounded-lg text-sm font-medium transition-colors ${
+                className={`flex items-center px-3 py-2.5 rounded-lg text-sm font-semibold transition-colors ${
                   isActive
                     ? "bg-red-50 text-red-700"
-                    : "text-stone-600 hover:bg-stone-50 hover:text-stone-900"
+                    : "text-gray-600 hover:bg-gray-50 hover:text-gray-900"
                 }`}
               >
                 {item.name}
@@ -56,24 +56,24 @@ export default function DashboardLayout({ children }: { children: React.ReactNod
             );
           })}
         </nav>
-        <div className="p-4 border-t border-stone-200">
+        <div className="p-4 border-t border-gray-100 bg-gray-50">
           <div className="mb-4 px-2">
-            <p className="text-sm font-medium text-stone-900">{user?.firstName} {user?.lastName}</p>
-            <p className="text-xs text-stone-500 truncate">{user?.email}</p>
-            <span className="inline-block mt-1 px-2 py-0.5 bg-stone-100 text-stone-600 text-xs rounded-full font-medium">
+            <p className="text-sm font-bold text-gray-900">{user?.firstName} {user?.lastName}</p>
+            <p className="text-xs text-gray-500 truncate">{user?.email}</p>
+            <span className="inline-block mt-1 px-2 py-0.5 bg-red-100 text-red-700 text-xs rounded-full font-bold">
               {isAdmin ? "ADMIN" : "CLIENTE"}
             </span>
           </div>
           <button
             onClick={logout}
-            className="w-full flex justify-center items-center px-4 py-2 border border-stone-300 rounded-lg shadow-sm text-sm font-medium text-stone-700 bg-white hover:bg-stone-50 focus:outline-none transition-colors"
+            className="w-full flex justify-center items-center px-4 py-2 border border-gray-300 rounded-lg shadow-sm text-sm font-bold text-gray-700 bg-white hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-red-500 transition-colors"
           >
             Cerrar Sesión
           </button>
         </div>
       </aside>
 
-      <main className="flex-1 overflow-auto bg-stone-50">
+      <main className="flex-1 overflow-auto bg-gray-50">
         <div className="mx-auto max-w-5xl py-8 px-8">
           {children}
         </div>
@@ -81,4 +81,3 @@ export default function DashboardLayout({ children }: { children: React.ReactNod
     </div>
   );
 }
-

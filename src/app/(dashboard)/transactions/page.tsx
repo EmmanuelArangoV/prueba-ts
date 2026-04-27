@@ -51,51 +51,51 @@ export default function TransactionsPage() {
   };
 
   if (isLoading) {
-    return <div className="text-center py-10 text-stone-500">Cargando Historial...</div>;
+    return <div className="text-center py-10 text-gray-500">Cargando Historial...</div>;
   }
 
   return (
     <div>
       <div className="mb-6 flex justify-between items-end">
         <div>
-          <h1 className="text-3xl font-bold text-stone-900 tracking-tight">
+          <h1 className="text-3xl font-bold text-gray-900 tracking-tight">
             {isAdmin ? "Panel de Control de Compras" : "Mis Compras"}
           </h1>
-          <p className="mt-1 text-stone-600">
+          <p className="mt-1 text-gray-600">
             {isAdmin ? "Gestione las transacciones en curso." : "Historial de pagos de sus manillas."}
           </p>
         </div>
       </div>
 
-      <div className="bg-white shadow-sm ring-1 ring-stone-900/5 sm:rounded-xl overflow-hidden">
-        <table className="min-w-full divide-y divide-stone-200">
-          <thead className="bg-stone-50">
+      <div className="bg-white shadow-sm ring-1 ring-gray-900/5 sm:rounded-xl overflow-hidden">
+        <table className="min-w-full divide-y divide-gray-200">
+          <thead className="bg-gray-50">
             <tr>
-              <th className="py-3.5 pl-4 pr-3 text-left text-xs font-semibold text-stone-900 sm:pl-6">ID Manilla / Usuario</th>
-              <th className="px-3 py-3.5 text-left text-xs font-semibold text-stone-900">Monto</th>
-              <th className="px-3 py-3.5 text-left text-xs font-semibold text-stone-900">Método</th>
-              <th className="px-3 py-3.5 text-left text-xs font-semibold text-stone-900">Estado</th>
-              <th className="px-3 py-3.5 text-left text-xs font-semibold text-stone-900 hidden md:table-cell">Fecha</th>
+              <th className="py-3.5 pl-4 pr-3 text-left text-xs font-semibold text-gray-900 sm:pl-6">ID Manilla / Usuario</th>
+              <th className="px-3 py-3.5 text-left text-xs font-semibold text-gray-900">Monto</th>
+              <th className="px-3 py-3.5 text-left text-xs font-semibold text-gray-900">Método</th>
+              <th className="px-3 py-3.5 text-left text-xs font-semibold text-gray-900">Estado</th>
+              <th className="px-3 py-3.5 text-left text-xs font-semibold text-gray-900 hidden md:table-cell">Fecha</th>
               <th className="relative py-3.5 pl-3 pr-4 sm:pr-6 whitespace-nowrap">
                 <span className="sr-only">Acciones</span>
               </th>
             </tr>
           </thead>
-          <tbody className="divide-y divide-stone-200 bg-white">
+          <tbody className="divide-y divide-gray-200 bg-white">
             {transactions.map((t) => (
-              <tr key={t.id} className="hover:bg-stone-50">
+              <tr key={t.id} className="hover:bg-gray-50">
                 <td className="py-4 pl-4 pr-3 text-sm sm:pl-6 max-w-[200px]">
-                  <div className="font-medium text-stone-900 text-ellipsis overflow-hidden">{t.bracelet.name}</div>
-                  {isAdmin && <div className="text-stone-500 truncate text-xs">{t.user.email}</div>}
+                  <div className="font-medium text-gray-900 text-ellipsis overflow-hidden">{t.bracelet.name}</div>
+                  {isAdmin && <div className="text-gray-500 truncate text-xs">{t.user.email}</div>}
                 </td>
-                <td className="px-3 py-4 text-sm text-stone-600 whitespace-nowrap">
+                <td className="px-3 py-4 text-sm text-gray-600 whitespace-nowrap">
                   ${Number(t.amount).toLocaleString()} {t.currency}
                 </td>
-                <td className="px-3 py-4 text-sm text-stone-600">
+                <td className="px-3 py-4 text-sm text-gray-600">
                   <div className="flex flex-col">
                     <span>{t.paymentMethod}</span>
                     {t.metadata && typeof t.metadata === "object" && t.metadata !== null ? (
-                      <span className="text-[10px] text-stone-400 font-mono">
+                      <span className="text-[10px] text-gray-400 font-mono">
                         {(t.metadata as Record<string, string>).brand} {(t.metadata as Record<string, string>).last4 && `*** ${(t.metadata as Record<string, string>).last4}`}
                         {(t.metadata as Record<string, string>).accountReference}
                         {(t.metadata as Record<string, string>).invoiceId}
@@ -112,7 +112,7 @@ export default function TransactionsPage() {
                     {t.status}
                   </span>
                 </td>
-                <td className="px-3 py-4 text-sm text-stone-500 hidden md:table-cell whitespace-nowrap">
+                <td className="px-3 py-4 text-sm text-gray-500 hidden md:table-cell whitespace-nowrap">
                   {new Date(t.createdAt).toLocaleDateString()}
                 </td>
                 <td className="relative py-4 pl-3 pr-4 text-right text-sm font-medium sm:pr-6 whitespace-nowrap space-x-3">
@@ -123,7 +123,7 @@ export default function TransactionsPage() {
                       <button onClick={() => handleApprove(t.id)} disabled={isUpdating === t.id} className="text-green-600 hover:text-green-900 font-bold disabled:opacity-50">
                         Aprobar
                       </button>
-                      <button onClick={() => handleReject(t.id)} disabled={isUpdating === t.id} className="text-stone-600 hover:text-stone-900 disabled:opacity-50">
+                      <button onClick={() => handleReject(t.id)} disabled={isUpdating === t.id} className="text-gray-600 hover:text-gray-900 disabled:opacity-50">
                         Rechazar
                       </button>
                     </>
@@ -139,14 +139,14 @@ export default function TransactionsPage() {
                      </button>
                   )}
                   {t.status === "PENDING" && !isAdmin && (
-                    <span className="text-stone-400 italic text-xs">En revisión</span>
+                    <span className="text-gray-400 italic text-xs">En revisión</span>
                   )}
                 </td>
               </tr>
             ))}
             {transactions.length === 0 && (
               <tr>
-                <td colSpan={6} className="py-8 text-center text-sm text-stone-500">
+                <td colSpan={6} className="py-8 text-center text-sm text-gray-500">
                   Aún no hay transacciones para mostrar.
                 </td>
               </tr>

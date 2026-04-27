@@ -5,7 +5,7 @@ import { parseBody } from "@/src/lib/validations";
 import { updateTransactionStatusSchema } from "@/src/lib/validations/transaction.schemas";
 import type { ApiResponse } from "@/src/types/auth";
 import { generateReceiptPdf } from "@/src/lib/pdf";
-import { sendReceiptEmail } from "@/src/lib/email";
+import { transporter } from "@/src/lib/email";
 
 export async function PATCH(
     req: NextRequest,
@@ -87,15 +87,21 @@ export async function PATCH(
                 status: "APPROVED",
             });
 
-            await sendReceiptEmail({
+            await transporter.sendMail({
+                from: `"PagosApp" <${process.env.SMTP_USER}>`,
                 to: updated.user.email,
-                subject: "Tu comprobante de pago - Payment Gateway",
+                subject: `Tu comprobante de pago #${updated.id.slice(0, 8).toUpperCase()}`,
                 text: "Gracias por tu compra. Adjuntamos el comprobante de la transacción.",
-                pdfBuffer,
-                transactionId: updated.id,
+                attachments: [
+                    {
+                        filename: `comprobante-${updated.id.slice(0, 8)}.pdf`,
+                        content: pdfBuffer,
+                        contentType: "application/pdf",
+                    },
+                ],
             });
 
-            // Actualizar fecha de envío del recibo
+            // Actualizar fecha de envio del recibo
             await prisma.transaction.update({
                 where: { id },
                 data: { receiptSentAt: new Date() },
