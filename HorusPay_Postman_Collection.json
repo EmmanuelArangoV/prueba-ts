@@ -1,0 +1,216 @@
+{
+  "info": {
+    "_postman_id": "a9a3b2b5-5c1a-4b9b-9a4f-5c5d3b3c6b2a",
+    "name": "HorusPay API",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "item": [
+    {
+      "name": "Auth",
+      "item": [
+        {
+          "name": "Login Admin",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "const cookieString = pm.response.headers.get('Set-Cookie');",
+                  "if (cookieString) {",
+                  "    console.log('Se detectó y seteó correctamente la cookie access_token');",
+                  "}"
+                ],
+                "type": "text/javascript"
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n    \"email\": \"admin@horuspay.com\",\n    \"password\": \"Admin123!\"\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/api/auth/login",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "auth", "login"]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Register Cliente",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n    \"firstName\": \"Juan\",\n    \"lastName\": \"Perez\",\n    \"email\": \"juan@ejemplo.com\",\n    \"password\": \"Password123!\"\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/api/auth/register",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "auth", "register"]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Logout",
+          "request": {
+            "method": "POST",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/api/auth/logout",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "auth", "logout"]
+            }
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "Bracelets",
+      "item": [
+        {
+          "name": "Get Bracelets (Público/Auth)",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/api/bracelets",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "bracelets"]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Create Bracelet (Solo Admin)",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n    \"name\": \"Horus Gold\",\n    \"description\": \"Manilla ultra premium bañada en oro.\",\n    \"price\": 299900,\n    \"stock\": 10,\n    \"currency\": \"COP\"\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/api/bracelets",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "bracelets"]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Update Bracelet (Solo Admin)",
+          "request": {
+            "method": "PATCH",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n    \"price\": 310000,\n    \"stock\": 15\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/api/bracelets/COLOCA_EL_ID_DE_UNA_MANILLA_AQUI",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "bracelets", "COLOCA_EL_ID_DE_UNA_MANILLA_AQUI"]
+            }
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "Transactions",
+      "item": [
+        {
+          "name": "Get Transactions (Mis compras / Todas si eres Admin)",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/api/transactions",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "transactions"]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Create Transaction (Comprar Manilla)",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n    \"braceletId\": \"COLOCA_EL_ID_DE_LA_MANILLA_AQUI\",\n    \"paymentMethod\": \"CREDIT_CARD\",\n    \"description\": \"Compra desde Postman\",\n    \"metadata\": {\n        \"brand\": \"Visa\",\n        \"last4\": \"1234\"\n    }\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/api/transactions",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "transactions"]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Approve Transaction (Solo Admin)",
+          "request": {
+            "method": "PATCH",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n    \"status\": \"APPROVED\",\n    \"reason\": \"Pago validado en Postman\"\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/api/transactions/COLOCA_EL_ID_DE_LA_TRANSACCION",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "transactions", "COLOCA_EL_ID_DE_LA_TRANSACCION"]
+            }
+          },
+          "response": []
+        }
+      ]
+    }
+  ],
+  "variable": [
+    {
+      "key": "baseUrl",
+      "value": "http://localhost:3000",
+      "type": "string"
+    }
+  ]
+}

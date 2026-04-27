@@ -1,6 +1,7 @@
 import { PrismaClient } from "../generated/prisma/client";
 import { PrismaPg } from "@prisma/adapter-pg";
 import * as dotenv from "dotenv";
+import bcrypt from "bcryptjs";
 
 dotenv.config();
 
@@ -11,6 +12,24 @@ const adapter = new PrismaPg({
 const prisma = new PrismaClient({ adapter });
 
 async function main() {
+    console.log("Seeding admin user...");
+
+    // Crear un usuario administrador por defecto
+    const adminPassword = await bcrypt.hash("Admin123!", 10);
+    await prisma.user.upsert({
+        where: { email: "admin@horuspay.com" },
+        update: {},
+        create: {
+            firstName: "Profesor",
+            lastName: "HorusAdmin",
+            email: "admin@horuspay.com",
+            passwordHash: adminPassword,
+            role: "ADMIN",
+            status: "ACTIVE"
+        },
+    });
+    console.log("Admin user seeded: admin@horuspay.com / Admin123!");
+
     console.log("Seeding bracelets...");
 
     const bracelets = [

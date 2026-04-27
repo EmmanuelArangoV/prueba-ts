@@ -90,5 +90,7 @@ npm run dev
 
 - Abre tu navegador web en [http://localhost:3000](http://localhost:3000)
 - Accede al Login o a `/register` para interactuar con la plataforma y crearte una cuenta.
-- **Asignación a modo Administrador (Opcional):**
-  Dado que es un panel, todas las cuentas por default se crean bajo el rol de *CLIENTE*. Si gustas probar el panel de aprobación administrativo: abre la BD con DBeaver/PgAdmin, y modifica a mano en la tabla `User` un correo cambiando tu `role` de string *"CLIENTE"* literal a **"ADMIN"**.
+- **Asignación a modo Administrador (Para el Profesor):**
+  Una vez hayas corrido el script `npx prisma db seed` en el backend, no necesitas crear ninguna cuenta de admin manual, simplemente inicia sesión directamente en [http://localhost:3000/login](http://localhost:3000/login) usando:
+  - **Correo:** `admin@horuspay.com`
+  - **Contraseña:** `Admin123!`
