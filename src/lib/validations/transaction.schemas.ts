@@ -6,7 +6,7 @@ export const createTransactionSchema = z.object({
         message: "Método de pago obligatorio",
     }),
     description: z.string().max(500).optional(),
-    metadata: z.record(z.string(), z.union([z.string(), z.number(), z.boolean()])).optional(), // Permite guardar brand, last4, etc sin usar any
+    metadata: z.record(z.string(), z.union([z.string(), z.number(), z.boolean()])).optional(),
 });
 
 export const updateTransactionStatusSchema = z.object({

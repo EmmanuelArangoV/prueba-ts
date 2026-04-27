@@ -49,5 +49,5 @@ export function requireAdmin(user: RequestUser | null): NextResponse | null {
 }
 
 export function requireClient(user: RequestUser | null): NextResponse | null {
-    return requireRoles(user, ["CLIENT", "ADMIN"]); // ADMIN también puede hacer lo que hace CLIENT
+    return requireRoles(user, ["CLIENT", "ADMIN"]);
 }

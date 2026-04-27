@@ -48,7 +48,7 @@ export function BraceletProvider({ children }: { children: ReactNode }) {
 
     const deleteBracelet = useCallback(async (id: string) => {
         await braceletService.remove(id);
-        // Desactiva o remueve de la lista visual, asumimos remover de la UI:
+        // remover de la UI:
         setBracelets((prev) => prev.filter((b) => b.id !== id));
     }, []);
 

@@ -14,8 +14,8 @@ export function useAuth() {
         setIsPending(true);
         try {
             await ctx.login(data);
-        } catch (e: any) {
-            setError(e.message ?? "Error al iniciar sesión");
+        } catch (e: unknown) {
+            setError("Error al iniciar sesión");
         } finally {
             setIsPending(false);
         }
