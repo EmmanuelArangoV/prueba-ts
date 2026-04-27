@@ -1,0 +1,121 @@
+generator client {
+  provider   = "prisma-client"
+  output     = "../generated/prisma"
+  engineType = "client"
+}
+
+datasource db {
+  provider = "postgresql"
+}
+
+// ENUMS
+
+enum Role {
+  ADMIN
+  CLIENT
+}
+
+enum AccountStatus {
+  ACTIVE
+  INACTIVE
+  SUSPENDED
+}
+
+enum TransactionStatus {
+  PENDING
+  APPROVED
+  REJECTED
+}
+
+enum PaymentMethod {
+  CREDIT_CARD
+  DEBIT_CARD
+  BANK_TRANSFER
+  CASH
+}
+
+// TABLA: users
+
+model User {
+  id           String        @id @default(uuid()) @db.Uuid
+  email        String        @unique
+  passwordHash String        @map("password_hash")
+  firstName    String        @map("first_name")
+  lastName     String        @map("last_name")
+  role         Role          @default(CLIENT)
+  status       AccountStatus @default(ACTIVE)
+  deletedAt    DateTime?     @map("deleted_at")
+  lastLogin    DateTime?     @map("last_login")
+  createdAt    DateTime      @default(now()) @map("created_at")
+  updatedAt    DateTime      @updatedAt @map("updated_at")
+
+  transactions Transaction[]
+
+  @@index([email, deletedAt])
+  @@index([role, status])
+  @@map("users")
+}
+
+// TABLA: bracelets
+// Catálogo de manillas disponibles para comprar
+
+model Bracelet {
+  id          String   @id @default(uuid()) @db.Uuid
+  name        String   @unique
+  description String?  @db.Text
+  price       Decimal  @db.Decimal(10, 2)
+  currency    String   @default("COP")
+  imageUrl    String?  @map("image_url")
+  isActive    Boolean  @default(true) @map("is_active")
+  stock       Int      @default(0)
+  createdAt   DateTime @default(now()) @map("created_at")
+  updatedAt   DateTime @updatedAt @map("updated_at")
+
+  transactions Transaction[]
+
+  @@index([isActive])
+  @@map("bracelets")
+}
+
+// TABLA: transactions
+
+model Transaction {
+  id            String            @id @default(uuid()) @db.Uuid
+  userId        String            @map("user_id") @db.Uuid
+  braceletId    String            @map("bracelet_id") @db.Uuid
+  amount        Decimal           @db.Decimal(10, 2)
+  currency      String            @default("COP")
+  status        TransactionStatus @default(PENDING)
+  paymentMethod PaymentMethod     @map("payment_method")
+  description   String?           @db.Text
+  receiptUrl    String?           @map("receipt_url")
+  receiptSentAt DateTime?         @map("receipt_sent_at")
+  metadata      Json?
+  createdAt     DateTime          @default(now()) @map("created_at")
+  updatedAt     DateTime          @updatedAt @map("updated_at")
+
+  user          User                       @relation(fields: [userId], references: [id], onDelete: Cascade)
+  bracelet      Bracelet                   @relation(fields: [braceletId], references: [id])
+  statusHistory TransactionStatusHistory[]
+
+  @@index([userId, status])
+  @@index([userId, createdAt(sort: Desc)])
+  @@index([status, createdAt(sort: Desc)])
+  @@map("transactions")
+}
+
+// TABLA: transaction_status_history
+
+model TransactionStatusHistory {
+  id             String             @id @default(uuid()) @db.Uuid
+  transactionId  String             @map("transaction_id") @db.Uuid
+  previousStatus TransactionStatus? @map("previous_status")
+  newStatus      TransactionStatus  @map("new_status")
+  reason         String?            @db.Text
+  createdAt      DateTime           @default(now()) @map("created_at")
+
+  transaction Transaction @relation(fields: [transactionId], references: [id], onDelete: Cascade)
+
+  @@index([transactionId, createdAt(sort: Desc)])
+  @@map("transaction_status_history")
+}
